@@ -20,6 +20,7 @@ var instanceurl = '';
 var orgid = '';
 var validpictures=[];
 var totalpics = 0;
+var dummyprofileurl = ''; // can use https://se--sandboxname--c.cs43.content.force.com/profilephoto/005/F'
 
 var userquery = "SELECT Id,FullPhotoUrl FROM User WHERE IsActive=true and contactId=null";
 
@@ -45,7 +46,7 @@ function getValidPictures(alreadyprocessedlist){
 			var curlstring='';
 			var query = conn.query(userquery)
 			.on('record',function(record){
-				if(record.FullPhotoUrl != 'https://se--UATbFO--c.cs43.content.force.com/profilephoto/005/F' && !_.contains(alreadyprocessedlist,record.Id))
+				if(record.FullPhotoUrl != dummyprofileurl && !_.contains(alreadyprocessedlist,record.Id))
 					validpictures.push(record);
 			})
 			.on('end',function(err,result){
