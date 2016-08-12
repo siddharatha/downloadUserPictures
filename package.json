@@ -1,0 +1,19 @@
+{
+  "name": "downloaduserpictures",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.4.1",
+    "jsforce": "^1.7.0",
+    "mkdirp": "^0.5.1",
+    "node-status": "^0.1.7",
+    "require": "^2.4.20",
+    "underscore": "^1.8.3"
+  }
+}
