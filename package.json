@@ -13,6 +13,7 @@
     "jsforce": "^1.7.0",
     "mkdirp": "^0.5.1",
     "node-status": "^0.1.7",
+    "request": "^2.74.0",
     "require": "^2.4.20",
     "underscore": "^1.8.3"
   }

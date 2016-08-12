@@ -4,23 +4,22 @@ var _ = require('underscore');
 var Promise = require('bluebird');
 var fs= Promise.promisifyAll(require('fs'));
 var mkdirp = require('mkdirp');
-var status = require('node-status')
 
 var conn = new jsforce.Connection({
 	oauth2 : {    
-		"loginUrl" : "<fill your loginUrl here >"
-			"clientId" : "<fill your clientId here >"
-			"clientSecret" : "<fill your clientSecret here >"
-			"redirectUri" : "<fill your redirectUri here >"
+		"loginUrl" : "<fill in the loginUrl> "
+			"clientId" : "<fill in the clientId> "
+			"clientSecret" : "<fill in the clientSecret> "
+			"redirectUri" : "<fill in the redirectUri> "
 	}
 });
 
-var username='<fill your username>';
-var password='<fill your password>';
+var username='xxxxxxxx';
+var password='xxxxxxxx';
 var instanceurl = '';
 var orgid = '';
 var validpictures=[];
-var pictureprogress = {};
+var totalpics = 0;
 
 var userquery = "SELECT Id,FullPhotoUrl FROM User WHERE IsActive=true and contactId=null";
 
@@ -33,7 +32,7 @@ fs.readFileAsync('processedlist','utf8')
 	return getValidPictures(alreadyprocessedlist);	
 })
 .then(getPictures)
-.then(function(res){
+.then(function(){
 	console.timeEnd('start');
 })
 .catch(failanddisplay);
@@ -60,22 +59,17 @@ function getValidPictures(alreadyprocessedlist){
 function getPicture(record){	
 return new Promise(function(resolve,reject)	{
 	request.get(record.FullPhotoUrl).auth(null, null, true, conn.accessToken).pipe(fs.createWriteStream('./downloadpics/'+record.Id+'.png')).on('finish',function(){
-		pictureprogress.inc();
-		resolve('done for '+record.Id);
+		console.log('finished processing '+ record.Id);
+		resolve();
 	});		
 });
 }
 
 function getPictures(records){
-console.log(records.length);	
-	pictureprogress = status.addItem("pictures", {
-  type: ['bar','percentage'],
-  max: records.length
-});
-	status.start()
+	totalpics = records.length;
 	return Promise.map(records, function(record) {    
 		return getPicture(record);
-	}, {concurrency: 100});
+	}, {concurrency: 30});
 
 }
 
